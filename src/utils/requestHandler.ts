@@ -16,7 +16,7 @@ declare global {
 
 type OkFn = <T>(data: T, _token?: string) => void | Promise<void>;
 
-const requestHandler =
+export const requestHandler =
   (fn: RequestHandler): RequestHandler =>
   (req: Request, res: Response, next) => {
     res.ok = data => {
@@ -31,5 +31,3 @@ const requestHandler =
     };
     Promise.resolve(fn(req, res, next)).catch(next);
   };
-
-export default requestHandler;

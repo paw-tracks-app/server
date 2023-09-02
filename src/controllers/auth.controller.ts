@@ -1,5 +1,5 @@
 import AuthService from '../services/auth.service';
-import requestHandler from '../utils/requestHandler';
+import { requestHandler } from '../utils/requestHandler';
 
 const login = requestHandler(async (req, res) => {
   const user = await AuthService.login(req.body);

@@ -14,4 +14,6 @@ const prismaOptions: { log?: LogDefinition[] } = {
 const prisma = new PrismaClient(prismaOptions);
 console.log('ppprisma!');
 
+export const Pet = prisma.pet;
+export const PetToUser = prisma.petToUser;
 export const User = prisma.user;

@@ -6,8 +6,7 @@ import env from './config/env';
 import router from './routes';
 import errorHandler from './utils/errorHandler';
 import { isAuthenticated } from './middleware';
-import requestHandler from './utils/requestHandler';
-
+import { requestHandler } from './utils/requestHandler';
 import createLogger from './config/logger';
 
 const logger = createLogger('APP');

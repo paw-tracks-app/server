@@ -3,7 +3,7 @@ import { password } from './custom.validator';
 
 const register = {
   body: Joi.object().keys({
-    firstName: Joi.string().required().min(5).max(24),
+    firstName: Joi.string().required().min(1).max(24),
     lastName: Joi.string().required().min(5).max(24),
     email: Joi.string().required().email(),
     password: Joi.string().required().custom(password),
