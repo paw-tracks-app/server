@@ -1,5 +1,5 @@
 import { User } from '@prisma/client';
-import UserService, { AuthUser } from './UserService';
+import UserService, { AuthUser } from './user.service';
 import { BadRequestError, UnauthorizedError } from '../config/errors';
 import { compareSync, hashSync } from 'bcryptjs';
 import { omit } from 'lodash';

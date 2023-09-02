@@ -4,7 +4,7 @@ import { decode, sign, verify } from 'jsonwebtoken';
 
 import env from './env';
 import { UnauthorizedError } from './errors';
-import { AuthUser } from '../services/UserService';
+import { AuthUser } from '../services/user.service';
 
 type PassportUser = AuthUser & { exp: number };
 

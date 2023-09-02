@@ -1,4 +1,4 @@
-import AuthService from '../services/AuthService';
+import AuthService from '../services/auth.service';
 import requestHandler from '../utils/requestHandler';
 
 const login = requestHandler(async (req, res) => {

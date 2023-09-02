@@ -1,5 +1,5 @@
 import { Request, RequestHandler, Response } from 'express';
-import { AuthUser } from '../services/UserService';
+import { AuthUser } from '../services/user.service';
 import { generateToken } from '../config/passport';
 import { omit } from 'lodash';
 
@@ -19,7 +19,7 @@ type OkFn = <T>(data: T, _token?: string) => void | Promise<void>;
 const requestHandler =
   (fn: RequestHandler): RequestHandler =>
   (req: Request, res: Response, next) => {
-    res.ok = (data) => {
+    res.ok = data => {
       let token: string | undefined;
       if (req.user?.isExpired) {
         token = generateToken(omit(req.user, ['isExpired']));
