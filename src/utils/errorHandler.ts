@@ -4,12 +4,12 @@ import createLogger from '../config/logger';
 
 const logger = createLogger('Error Handler');
 
-const errorHandler: ErrorRequestHandler = (err, req, res, next) => {
+const errorHandler: ErrorRequestHandler = (err, _req, res, _next) => {
   logger.debug(err.message);
-  
+
   if (err instanceof ApiError) {
     res.status(err.status).json({
-      error: err.message,
+      errors: err.errors,
     });
     return;
   }

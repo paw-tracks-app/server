@@ -1,8 +1,15 @@
+export interface MyError {
+  key: string;
+  message: string;
+}
+
 export class ApiError extends Error {
   status = 500;
+  errors: MyError[] | undefined;
 
-  constructor(message: string) {
+  constructor(message: string, errors?: MyError[]) {
     super(message);
+    this.errors = errors ?? [{ key: 'error', message }];
   }
 }
 

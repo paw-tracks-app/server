@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import Joi from 'joi';
 import pick from '../utils/pick';
 import { BadRequestError } from '../config/errors';
+import { convertToErrorObj } from '../validators/utils/convertToErrorObj';
 
 const validate =
   (schema: object) =>
@@ -16,10 +17,10 @@ const validate =
       .prefs({ errors: { label: 'key' }, abortEarly: false })
       .validate(obj);
     if (error) {
-      const errorMessage = error.details
-        .map(details => details.message)
-        .join(', ');
-      return next(new BadRequestError(errorMessage));
+      const errors = error.details.map(details =>
+        convertToErrorObj(details.message),
+      );
+      return next(new BadRequestError(errors[0].message, errors));
     }
     Object.assign(req, value);
     return next();
