@@ -16,4 +16,5 @@ console.log('ppprisma!');
 
 export const Pet = prisma.pet;
 export const PetToUser = prisma.petToUser;
+export const Track = prisma.track;
 export const User = prisma.user;

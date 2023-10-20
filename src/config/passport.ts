@@ -4,17 +4,19 @@ import { decode, sign, verify } from 'jsonwebtoken';
 
 import env from './env';
 import { UnauthorizedError } from './errors';
-import { AuthUser } from '../services/user.service';
+import userService, { AuthUser } from '../services/user.service';
 
 type PassportUser = AuthUser & { exp: number; iat: number };
 
 export const generateToken = (user: AuthUser) =>
-  sign(user, env.jwtSecret, { expiresIn: '4h' });
+  sign(user, env.jwtSecret, { expiresIn: '4d' });
 
 passport.use(
   new BearerStrategy(async (token, cb) => {
     try {
       const { exp, iat, ...user } = verify(token, env.jwtSecret) as PassportUser;
+
+      await userService.findById(user.id);
 
       const isExpired = new Date(exp * 1000).valueOf() < Date.now() + 300000; // expire 5 minutes early to regenerate token
 

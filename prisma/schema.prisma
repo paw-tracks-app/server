@@ -37,19 +37,55 @@ model Pet {
 
   name   String
   owners PetToUser[]
+  track  Track[]
 
   @@map("pet")
 }
 
 model PetToUser {
   user   User @relation(fields: [userId], references: [id])
-  userId Int // relation scalar field (used in the `@relation` attribute above)
-  pet    Pet  @relation(fields: [petId], references: [id])
-  petId  Int // relation scalar field (used in the `@relation` attribute above)
-
-  assignedAt DateTime @default(now())
-  assignedBy Int
+  userId Int  @map("user_id")
+  pet    Pet  @relation(fields: [petId], references: [id], onDelete: Cascade)
+  petId  Int  @map("pet_id")
 
   @@id([userId, petId])
   @@map("pet_to_user")
+}
+
+enum TrackType {
+  MEAL
+  MEDICINE
+  TREAT
+  OTHER
+}
+
+model Track {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("(updated_at)")
+
+  label  String
+  type   TrackType
+  time   String?
+  days   String[]
+  amount String?
+
+  pet       Pet         @relation(fields: [petId], references: [id], onDelete: Cascade)
+  petId     Int         @map("pet_id")
+  trackData TrackData[]
+
+  @@map("track")
+}
+
+model TrackData {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("(updated_at)")
+
+  track   Track @relation(fields: [trackId], references: [id])
+  trackId Int   @map("track_id")
+
+  date DateTime
+
+  @@map("track_data")
 }

@@ -1,21 +1,36 @@
+import { TrackType } from '@prisma/client';
 import { Pet, PetToUser } from '../config/prisma';
+import trackService from './track.service';
 
-type IPet = { id: number; name: string };
+type PetTrack = {
+  id: number;
+  label: string;
+  type: TrackType;
+  days: string[];
+  time: string | null;
+  amount: string | null;
+};
+type IPet = { id: number; name: string; track: PetTrack[] };
 
-const create = async (name: string, userId: number) => {
+const create = async (name: string, userId: number): Promise<IPet> => {
   const createdPet = await Pet.create({
     data: {
       name,
       owners: {
         create: {
           userId,
-          assignedBy: userId,
         },
       },
     },
+    select: {
+      id: true,
+      name: true,
+    },
   });
 
-  return createdPet;
+  await trackService.createDefaults(createdPet.id);
+
+  return { ...createdPet, track: [] };
 };
 
 const mine = async (id: number): Promise<IPet[]> => {
@@ -28,6 +43,16 @@ const mine = async (id: number): Promise<IPet[]> => {
         select: {
           id: true,
           name: true,
+          track: {
+            select: {
+              id: true,
+              label: true,
+              amount: true,
+              type: true,
+              days: true,
+              time: true,
+            },
+          },
         },
       },
     },
